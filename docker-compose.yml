@@ -17,7 +17,9 @@ services:
       POSTGRES_USER: ${PG_USER:-authentik}
       POSTGRES_DB: ${PG_DB:-authentik}
     env_file:
-      - .env
+      - path: .env
+      - path: .env.overrides
+        required: false
   redis:
     image: docker.io/library/redis:alpine
     command: --save 60 1 --loglevel warning
@@ -44,7 +46,9 @@ services:
       - ./media:/media
       - ./custom-templates:/templates
     env_file:
-      - .env
+      - path: .env
+      - path: .env.overrides
+        required: false
     ports:
       - "${COMPOSE_PORT_HTTP:-9000}:9000"
       - "${COMPOSE_PORT_HTTPS:-9443}:9443"
@@ -76,7 +80,9 @@ services:
       - ./certs:/certs
       - ./custom-templates:/templates
     env_file:
-      - .env
+      - path: .env
+      - path: .env.overrides
+        required: false
     depends_on:
       postgresql:
         condition: service_healthy
